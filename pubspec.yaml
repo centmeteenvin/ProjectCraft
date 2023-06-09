@@ -7,8 +7,10 @@ environment:
   sdk: '>=2.19.6 <3.0.0'
 
 dependencies:
+  firebase_core: ^2.13.1
   flutter:
     sdk: flutter
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
