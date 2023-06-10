@@ -7,7 +7,7 @@ environment:
   sdk: '>=2.19.6 <3.0.0'
 
 dependencies:
-  firebase_auth_web: ^5.5.2
+  firebase_auth: ^4.6.2
   firebase_core: ^2.13.1
   flutter:
     sdk: flutter

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+final ColorScheme colorScheme = ColorScheme.fromSwatch(
+  primarySwatch: Colors.indigo,
+);
 
 final ThemeData theme = ThemeData(
   brightness: Brightness.light,
-  primaryColor: const Color(0x00673AB7),
-
+  colorScheme:  colorScheme,
 
   fontFamily: 'Roboto',
 
@@ -12,7 +14,15 @@ final ThemeData theme = ThemeData(
       fontSize: 70,
       fontWeight: FontWeight.bold
     ), 
-  ),
+    
+    ), 
+
+  appBarTheme: AppBarTheme(
+    titleTextStyle: TextStyle(
+      fontSize: 30,
+      color: colorScheme.onPrimary
+    )
+  )
 
 
 );
