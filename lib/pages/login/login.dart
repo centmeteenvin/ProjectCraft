@@ -1,6 +1,11 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:project_craft/services/authentication.dart';
+
+import '../../utils/providers.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -28,16 +33,17 @@ class Login extends StatelessWidget {
   }
 }
 
-class LoginButton extends StatelessWidget {
+class LoginButton extends ConsumerWidget {
   const LoginButton({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
-      onPressed: () {
-        //TODO
+      onPressed: () async {
+        await AuthenticationService.loginGoogle();
+        ref.read(userProvider.notifier).state = FirebaseAuth.instance.currentUser;
       },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(Colors.blue)
