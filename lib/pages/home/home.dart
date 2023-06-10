@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:project_craft/pages/login/login.dart';
 import 'package:project_craft/utils/providers.dart';
 import 'dart:developer';
@@ -35,9 +36,23 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text("Current projects"),
         centerTitle: true,
-        leading: CircleAvatar(
-          child: user?.photoURL == null ? const Icon(Icons.abc) : ImageIcon(NetworkImage(user!.photoURL!)),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircleAvatar(
+            child: user?.photoURL == null
+                ? const Icon(Icons.person_outline)
+                : ImageIcon(NetworkImage(user!.photoURL!)),
+            
+          ),
         ),
+        actions: [
+          IconButton(onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            ref.read(userProvider.notifier).state = null;
+          },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
     );
   }

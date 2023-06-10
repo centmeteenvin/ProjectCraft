@@ -24,6 +24,7 @@ class ProjectCraft extends StatelessWidget {
       routes: route.routes,
       initialRoute: "/home",
       theme:  theme,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

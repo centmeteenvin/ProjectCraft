@@ -21,7 +21,7 @@ final ThemeData theme = ThemeData(
     titleTextStyle: TextStyle(
       fontSize: 30,
       color: colorScheme.onPrimary
-    )
+    ),
   )
 
 
