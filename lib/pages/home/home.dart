@@ -33,27 +33,49 @@ class HomeScreen extends ConsumerWidget {
     User? user = ref.watch(userProvider);
     log(user.toString());
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Current projects"),
-        centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            child: user?.photoURL == null
-                ? const Icon(Icons.person_outline)
-                : ImageIcon(NetworkImage(user!.photoURL!)),
-            
-          ),
-        ),
-        actions: [
-          IconButton(onPressed: () async {
-            await FirebaseAuth.instance.signOut();
-            ref.read(userProvider.notifier).state = null;
-          },
-            icon: const Icon(Icons.logout),
-          ),
+      appBar: HomeAppbar(user: user),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
         ],
       ),
     );
   }
+}
+
+class HomeAppbar extends ConsumerWidget implements PreferredSizeWidget{
+  const HomeAppbar({
+    super.key,
+    required this.user,
+  });
+
+  final User? user;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AppBar(
+      title: const Text("Current projects"),
+      centerTitle: true,
+      leading: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CircleAvatar(
+          child: user?.photoURL == null
+              ? const Icon(Icons.person_outline)
+              : ImageIcon(NetworkImage(user!.photoURL!)),
+          
+        ),
+      ),
+      actions: [
+        IconButton(onPressed: () async {
+          await FirebaseAuth.instance.signOut();
+          ref.read(userProvider.notifier).state = null;
+        },
+          icon: const Icon(Icons.logout),
+        ),
+      ],
+    );
+  }
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
