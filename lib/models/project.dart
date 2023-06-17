@@ -35,6 +35,51 @@ class Project {
       "tasks":taskIds.toList(),
     };
   }
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
 
-  
+    return other is Project &&
+        uuid == other.uuid &&
+        title == other.title &&
+        startDate == other.startDate &&
+        deadline == other.deadline &&
+        ownerId == other.ownerId &&
+        contributorIds == other.contributorIds &&
+        taskIds == other.taskIds
+        ;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      uuid,
+      title,
+      startDate,
+      deadline,
+      ownerId,
+      contributorIds,
+      taskIds,
+    );
+  }
+
+  Project copyWith({
+    String? uuid,
+    String? title,
+    DateTime? startDate,
+    DateTime? deadline,
+    String? ownerId,
+    Set<String>? contributorIds,
+    List<String>? taskIds,
+  }) {
+    return Project(
+      uuid: uuid ?? this.uuid,
+      title: title ?? this.title,
+      startDate: startDate ?? this.startDate,
+      deadline: deadline ?? this.deadline,
+      ownerId: ownerId ?? this.ownerId,
+      contributorIds: contributorIds ?? this.contributorIds,
+      taskIds: taskIds ?? this.taskIds,
+    );
+  }
 }
