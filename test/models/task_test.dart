@@ -1,7 +1,7 @@
 import 'dart:math';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:project_craft/models/task.dart';
-import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
 void main() {

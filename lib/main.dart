@@ -7,7 +7,7 @@ import 'package:project_craft/utils/theme.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  await dotenv.load(fileName: "../.env");
+  await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.web,
