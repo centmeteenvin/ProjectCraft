@@ -33,6 +33,12 @@ void main() {
         expect(vincent.toMap(), resultMap);
       }
     });
+    test('FromMap Test', () {
+      Person person = randomPerson();
+      Map<String, dynamic> personMap = person.toMap();
+      Person copy = Person.fromMap(personMap);
+      expect(copy.toMap(), personMap);
+    });
   });
   group('copyWith Tests', () {
     test('no fields changed', () {

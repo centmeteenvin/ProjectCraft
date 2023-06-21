@@ -1,14 +1,18 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:project_craft/models/model.dart';
 
 @immutable
-class Person {
+class Person implements Serializable{
   final String firstName;
   final String lastName;
   final String photoUrl;
+  @override
   final String uuid;
   final Set<String> projectIds;
+  @override
+  final String collectionName = "Person";
 
   const Person(
       {required this.uuid,
@@ -17,6 +21,7 @@ class Person {
       required this.photoUrl,
       required this.projectIds});
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       "uuid":uuid,
@@ -27,16 +32,16 @@ class Person {
     };
   }
 
+  @override
   ///Converts the current object to a Map with string keys.
   ///All fields that are of type Person, Project or Task, are mapped to their corresponding uuid.
-  static Person fromMap(Map<String, dynamic> map) {
-    //TODO Unit test.
+  factory Person.fromMap(Map<String, dynamic> map) {
     return Person(
       uuid:map["uuid"],
       firstName:map["firstName"],
       lastName:map["lastName"],
       photoUrl:map["photoUrl"],
-      projectIds:map["projects"],
+      projectIds:(map["projects"] as List).toSet() as Set<String>,
     );
   }
 

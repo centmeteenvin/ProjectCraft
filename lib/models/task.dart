@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:project_craft/models/person.dart';
+import 'package:project_craft/models/model.dart';
 
 enum Status { toPlan, planned, started, completed, delayed }
 
 @immutable
-class Task {
+class Task implements Serializable{
+  @override
   final String uuid;
   final String title;
   final String description;
-  final Set<String> agentIds;
-  final List<String> subTaskIds;
-  final List<String> dependingOnTaskIds;
   final DateTime startDate;
   final DateTime deadline;
   final Status status;
+
+  final Set<String> agentIds;
+  final List<String> subTaskIds;
+  final List<String> dependingOnTaskIds;
+
+  @override
+  final String collectionName = "Tasks";
 
   const Task(
       {required this.title,
@@ -28,6 +33,7 @@ class Task {
 
   ///Converts the current object to a Map with string keys.
   ///All fields that are of type Person, Project or Task, are mapped to their corresponding uuid.
+  @override
   Map<String, dynamic> toMap() {
     return {
       "uuid": uuid,
@@ -40,6 +46,21 @@ class Task {
       "subTasks": subTaskIds,
       "dependingOn": dependingOnTaskIds,
     };
+  }
+
+  @override
+  factory Task.fromMap(Map<String, dynamic> map) {
+    return Task(
+      uuid: map["uuid"],
+      title: map["title"],
+      description: map["description"],
+      startDate: map["startDate"],
+      deadline: map["deadline"],
+      status: map["status"],
+      agentIds: (map["agents"] as List<String>).toSet(),
+      subTaskIds: map["subTasks"] as List<String>,
+      dependingOnTaskIds: map["dependingOn"] as List<String>
+    );
   }
 
   @override

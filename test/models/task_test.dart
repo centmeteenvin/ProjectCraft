@@ -78,6 +78,12 @@ void main() {
         expect(task.toMap(), resultMap);
       }
     });
+    test('FromMap tests', () {
+      Task task = randomTask();
+      Map<String, dynamic> taskMap = task.toMap();
+      Task copy = Task.fromMap(taskMap);
+      expect(copy.toMap(), taskMap);
+    });
   });
   group('CopyWith tests', () {
     test('no fields changed', () {

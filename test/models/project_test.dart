@@ -1,18 +1,10 @@
 import 'dart:math';
-import 'dart:developer' as dev;
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:project_craft/firebase_options.dart';
 import 'package:project_craft/models/project.dart';
 import 'package:uuid/uuid.dart';
 
 void main() async {
-  await dotenv.load();
-  WidgetsFlutterBinding.ensureInitialized;
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform, name: "Testing");
   group('Project Map Tests', () {
     test('Project with empty person, contributors and tasks', () {
       DateTime now = DateTime.now();
@@ -64,6 +56,12 @@ void main() async {
         };
         expect(project.toMap(), resultMap);
       }
+    });
+    test('FromMap tests', () {
+      Project project = randomProject();
+      Map<String, dynamic> projectMap = project.toMap();
+      Project copy = Project.fromMap(projectMap);
+      expect(copy.toMap(), projectMap);
     });
   });
   group('CopyWith tests', () {
