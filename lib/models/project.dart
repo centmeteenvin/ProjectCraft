@@ -16,8 +16,6 @@ class Project implements Serializable{
   final List<String> taskIds;
 
   @override
-  final String collectionName = "Projects";
-
   const Project(
       {required this.title,
       required this.ownerId,

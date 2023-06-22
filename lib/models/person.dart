@@ -12,7 +12,6 @@ class Person implements Serializable{
   final String uuid;
   final Set<String> projectIds;
   @override
-  final String collectionName = "Person";
 
   const Person(
       {required this.uuid,

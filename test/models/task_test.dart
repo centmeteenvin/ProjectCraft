@@ -28,7 +28,7 @@ void main() {
         "agents": const <String>{},
         "subTasks": List.empty(),
         "dependingOn": List.empty(),
-        "status": Status.toPlan,
+        "status": Status.toPlan.name,
       };
       expect(task.toMap(), resultMap);
     });
@@ -73,7 +73,7 @@ void main() {
           "agents": agents.toList(),
           "subTasks": subTasks,
           "dependingOn": dependents,
-          "status": Status.toPlan,
+          "status": Status.toPlan.name,
         };
         expect(task.toMap(), resultMap);
       }

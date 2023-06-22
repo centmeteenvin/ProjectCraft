@@ -18,7 +18,6 @@ class Task implements Serializable{
   final List<String> dependingOnTaskIds;
 
   @override
-  final String collectionName = "Tasks";
 
   const Task(
       {required this.title,
@@ -41,7 +40,7 @@ class Task implements Serializable{
       "description": description,
       "startDate": startDate,
       "deadline": deadline,
-      "status": status,
+      "status": status.name,
       "agents": agentIds.toList(),
       "subTasks": subTaskIds,
       "dependingOn": dependingOnTaskIds,
@@ -56,7 +55,7 @@ class Task implements Serializable{
       description: map["description"],
       startDate: map["startDate"],
       deadline: map["deadline"],
-      status: map["status"],
+      status: Status.values.firstWhere((element) => element.name == map["status"]),
       agentIds: (map["agents"] as List<String>).toSet(),
       subTaskIds: map["subTasks"] as List<String>,
       dependingOnTaskIds: map["dependingOn"] as List<String>
