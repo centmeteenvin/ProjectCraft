@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore: depend_on_referenced_packages
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 class FireStoreService {
 
