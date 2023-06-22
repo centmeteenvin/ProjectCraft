@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
   }
 
   static FirebaseOptions web = FirebaseOptions(
-    apiKey: dotenv.env["FIREBASE_API_KEY"]!,
+    apiKey: dotenv.env["FIREBASE_API_KEY_WEB"]!,
     appId: '1:732066975813:web:31787f73845ed06008932c',
     messagingSenderId: '732066975813',
     projectId: 'projectcraft-7bd8d',

@@ -1,10 +1,10 @@
 import 'dart:math';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:project_craft/models/project.dart';
-import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
-void main() {
+void main() async {
   group('Project Map Tests', () {
     test('Project with empty person, contributors and tasks', () {
       DateTime now = DateTime.now();
@@ -56,6 +56,12 @@ void main() {
         };
         expect(project.toMap(), resultMap);
       }
+    });
+    test('FromMap tests', () {
+      Project project = randomProject();
+      Map<String, dynamic> projectMap = project.toMap();
+      Project copy = Project.fromMap(projectMap);
+      expect(copy.toMap(), projectMap);
     });
   });
   group('CopyWith tests', () {

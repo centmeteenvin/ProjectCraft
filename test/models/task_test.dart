@@ -1,7 +1,7 @@
 import 'dart:math';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:project_craft/models/task.dart';
-import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
 void main() {
@@ -28,7 +28,7 @@ void main() {
         "agents": const <String>{},
         "subTasks": List.empty(),
         "dependingOn": List.empty(),
-        "status": Status.toPlan,
+        "status": Status.toPlan.name,
       };
       expect(task.toMap(), resultMap);
     });
@@ -73,10 +73,16 @@ void main() {
           "agents": agents.toList(),
           "subTasks": subTasks,
           "dependingOn": dependents,
-          "status": Status.toPlan,
+          "status": Status.toPlan.name,
         };
         expect(task.toMap(), resultMap);
       }
+    });
+    test('FromMap tests', () {
+      Task task = randomTask();
+      Map<String, dynamic> taskMap = task.toMap();
+      Task copy = Task.fromMap(taskMap);
+      expect(copy.toMap(), taskMap);
     });
   });
   group('CopyWith tests', () {
