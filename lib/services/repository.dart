@@ -1,4 +1,3 @@
-
 import 'package:project_craft/models/model.dart';
 import 'package:project_craft/services/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,31 +6,38 @@ import '../models/person.dart';
 import '../models/project.dart';
 import '../models/task.dart';
 
-class Repository<T extends Serializable>  {
+class Repository<T extends Serializable> {
   final FireStoreService fs;
   late final String collection;
   Repository(this.fs) {
     switch (T) {
-      case Task: {
-        collection = "Tasks";
-      } break;
-      case Project: {
-        collection = "Projects";
-      } break;
-      case Person: {
-        collection = "Persons";
-      } break;
-      default: throw TypeError();
+      case Task:
+        {
+          collection = "Tasks";
+        }
+        break;
+      case Project:
+        {
+          collection = "Projects";
+        }
+        break;
+      case Person:
+        {
+          collection = "Persons";
+        }
+        break;
+      default:
+        throw TypeError();
     }
   }
-  
+
   ///Creates a model, overwrites previous model if it was already stored. Returns true if a new document was created
   Future<bool> create(T model) async {
-    return await fs.addDocument(collection,  model.uuid, model.toMap());
+    return await fs.addDocument(collection, model.uuid, model.toMap());
   }
 
   Future<Serializable?> read(String uuid) async {
-    Map<String, dynamic>? data = await fs.fetchDocument(collection , uuid);
+    Map<String, dynamic>? data = await fs.fetchDocument(collection, uuid);
     if (data == null) {
       return null;
     }
@@ -43,7 +49,8 @@ class Repository<T extends Serializable>  {
           flutterMap[key] = (value as Timestamp).toDate();
           break;
         case List<dynamic>:
-          flutterMap[key] = (value as List<dynamic>).map((e) => e.toString()).toList();
+          flutterMap[key] =
+              (value as List<dynamic>).map((e) => e.toString()).toList();
           break;
         default:
           flutterMap[key] = value;
@@ -64,7 +71,7 @@ class Repository<T extends Serializable>  {
   Future<List<String>> readAllIds() async {
     return await fs.listDocIds(collection);
   }
-  
+
   ///saves model in the firestore, returns true if new document was created.
   Future<bool> save(T model) async {
     return await fs.updateDocument(collection, model.uuid, model.toMap());
@@ -87,5 +94,8 @@ class Repository<T extends Serializable>  {
     }
     return ids.length;
   }
-  
+}
+
+class TaskRepository extends Repository<Task> {
+  TaskRepository(super.fs);
 }
