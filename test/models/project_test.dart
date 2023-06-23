@@ -102,7 +102,7 @@ Project randomProject() {
           tasks.add(const Uuid().v4());
         }
         return Project(
-          uuid: "1",
+          uuid: const Uuid().v4(),
           title: "test",
           ownerId: owner,
           startDate: DateTime.now(),
