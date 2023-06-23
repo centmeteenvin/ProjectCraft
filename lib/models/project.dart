@@ -1,9 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:project_craft/models/model.dart';
 
 
 @immutable
-class Project {
+class Project implements Serializable{
+  @override
   final String uuid;
   final String title;
   final DateTime startDate;
@@ -13,6 +15,7 @@ class Project {
   final Set<String> contributorIds;
   final List<String> taskIds;
 
+  @override
   const Project(
       {required this.title,
       required this.ownerId,
@@ -24,6 +27,7 @@ class Project {
 
   ///Converts the current object to a Map with string keys.
   ///All fields that are of type Person, Project or Task, are mapped to their corresponding uuid.
+  @override
   Map<String, dynamic> toMap() {
     return {
       "uuid":uuid,
@@ -35,6 +39,20 @@ class Project {
       "tasks":taskIds.toList(),
     };
   }
+
+  @override
+  factory Project.fromMap(Map<String, dynamic> map) {
+    return Project(
+      uuid: map["uuid"],
+      title: map["title"],
+      ownerId: map["owner"],
+      startDate: map["startDate"],
+      deadline: map["deadline"],
+      contributorIds: (map["contributors"] as List<String>).toSet(),
+      taskIds: map["tasks"] as List<String>,
+    );
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

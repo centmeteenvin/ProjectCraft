@@ -1,4 +1,4 @@
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:project_craft/models/person.dart';
 
 void main() {
@@ -32,6 +32,12 @@ void main() {
         };
         expect(vincent.toMap(), resultMap);
       }
+    });
+    test('FromMap Test', () {
+      Person person = randomPerson();
+      Map<String, dynamic> personMap = person.toMap();
+      Person copy = Person.fromMap(personMap);
+      expect(copy.toMap(), personMap);
     });
   });
   group('copyWith Tests', () {
