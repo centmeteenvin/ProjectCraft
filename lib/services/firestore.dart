@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore: depend_on_referenced_packages
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+// ignore: depend_on_referenced_packages
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:project_craft/utils/exceptions.dart';
 class FireStoreService {
@@ -7,7 +9,11 @@ class FireStoreService {
   late final FirebaseFirestore _db;
   FireStoreService({bool isTesting = false}) {
     if (isTesting) {
-      _db = FakeFirebaseFirestore();
+      final auth = MockFirebaseAuth(signedIn: true, mockUser: MockUser(uid: "test_user"));
+      _db = FakeFirebaseFirestore(
+        securityRules: rules,
+        authObject: auth.authForFakeFirestore,
+      );
     } else {
       _db = FirebaseFirestore.instance;
     } 
@@ -95,3 +101,13 @@ Future<Map<String,dynamic>?> fetchDocument(String collection, String docId) asyn
   }
 
 } 
+
+const String rules = '''
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+	}
+}''';
+//TODO security rules that include the resource and collection functionality. I don't want to update firestore rules in console if I cannot test it here.
