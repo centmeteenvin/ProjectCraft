@@ -18,6 +18,8 @@ void main() {
         subTaskIds: List.empty(),
         dependingOnTaskIds: List.empty(),
         status: Status.toPlan,
+        isLocked: false,
+        lockedBy: "",
       );
       var resultMap = {
         "uuid": "1",
@@ -29,6 +31,8 @@ void main() {
         "subTasks": List.empty(),
         "dependingOn": List.empty(),
         "status": Status.toPlan.name,
+        "isLocked": false,
+        "lockedBy": "",
       };
       expect(task.toMap(), resultMap);
     });
@@ -63,6 +67,8 @@ void main() {
           subTaskIds: subTasks,
           dependingOnTaskIds: dependents,
           status: Status.toPlan,
+          isLocked: false,
+          lockedBy: "",
         );
         var resultMap = {
           "uuid": "1",
@@ -74,6 +80,8 @@ void main() {
           "subTasks": subTasks,
           "dependingOn": dependents,
           "status": Status.toPlan.name,
+          "isLocked": false,
+          "lockedBy": "",
         };
         expect(task.toMap(), resultMap);
       }
@@ -101,32 +109,34 @@ void main() {
 }
 
 Task randomTask() {
-        var agents = <String>{};
-        int amount = Random().nextInt(20);
-        for (int i = 0; i < amount; i++) {
-          agents.add(const Uuid().v4());
-        }
-        var subTasks = <String>[];
-        amount = Random().nextInt(20);
-        for (int i = 0; i < amount; i++) {
-          subTasks.add(const Uuid().v4());
-        }
-        var dependents = <String>[];
-        amount = Random().nextInt(20);
-        for (int i = 0; i < amount; i++) {
-          dependents.add(const Uuid().v4());
-        }
+  var agents = <String>{};
+  int amount = Random().nextInt(20);
+  for (int i = 0; i < amount; i++) {
+    agents.add(const Uuid().v4());
+  }
+  var subTasks = <String>[];
+  amount = Random().nextInt(20);
+  for (int i = 0; i < amount; i++) {
+    subTasks.add(const Uuid().v4());
+  }
+  var dependents = <String>[];
+  amount = Random().nextInt(20);
+  for (int i = 0; i < amount; i++) {
+    dependents.add(const Uuid().v4());
+  }
 
-        DateTime now = DateTime.now();
-        return Task(
-          uuid: "1",
-          title: "test",
-          description: "test description",
-          startDate: now,
-          deadline: now,
-          agentIds: agents,
-          subTaskIds: subTasks,
-          dependingOnTaskIds: dependents,
-          status: Status.toPlan,
-        );
+  DateTime now = DateTime.now();
+  return Task(
+    uuid: "1",
+    title: "test",
+    description: "test description",
+    startDate: now,
+    deadline: now,
+    agentIds: agents,
+    subTaskIds: subTasks,
+    dependingOnTaskIds: dependents,
+    status: Status.toPlan,
+    isLocked: false,
+    lockedBy: "",
+  );
 }

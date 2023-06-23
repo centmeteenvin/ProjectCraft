@@ -4,7 +4,7 @@ import 'package:project_craft/models/model.dart';
 enum Status { toPlan, planned, started, completed, delayed }
 
 @immutable
-class Task implements Serializable{
+class Task implements Serializable, Lockable {
   @override
   final String uuid;
   final String title;
@@ -18,7 +18,11 @@ class Task implements Serializable{
   final List<String> dependingOnTaskIds;
 
   @override
+  final bool isLocked;
+  @override
+  final String lockedBy;
 
+  @override
   const Task(
       {required this.title,
       required this.description,
@@ -28,7 +32,9 @@ class Task implements Serializable{
       required this.startDate,
       required this.deadline,
       required this.status,
-      required this.uuid});
+      required this.uuid,
+      required this.isLocked,
+      required this.lockedBy});
 
   ///Converts the current object to a Map with string keys.
   ///All fields that are of type Person, Project or Task, are mapped to their corresponding uuid.
@@ -44,6 +50,8 @@ class Task implements Serializable{
       "agents": agentIds.toList(),
       "subTasks": subTaskIds,
       "dependingOn": dependingOnTaskIds,
+      "isLocked": isLocked,
+      "lockedBy": lockedBy
     };
   }
 
@@ -55,10 +63,13 @@ class Task implements Serializable{
       description: map["description"],
       startDate: map["startDate"],
       deadline: map["deadline"],
-      status: Status.values.firstWhere((element) => element.name == map["status"]),
+      status:
+          Status.values.firstWhere((element) => element.name == map["status"]),
       agentIds: (map["agents"] as List<String>).toSet(),
       subTaskIds: map["subTasks"] as List<String>,
-      dependingOnTaskIds: map["dependingOn"] as List<String>
+      dependingOnTaskIds: map["dependingOn"] as List<String>,
+      isLocked: map["isLocked"],
+      lockedBy: map["lockedBy"],
     );
   }
 
@@ -70,7 +81,7 @@ class Task implements Serializable{
           uuid == other.uuid &&
           title == other.title &&
           description == other.description &&
-          agentIds  == other.agentIds &&
+          agentIds == other.agentIds &&
           subTaskIds == other.subTaskIds &&
           dependingOnTaskIds == other.dependingOnTaskIds &&
           startDate == other.startDate &&
@@ -78,8 +89,8 @@ class Task implements Serializable{
           status == other.status;
 
   @override
-  int get hashCode =>
-    Object.hash(uuid, title, description, agentIds, subTaskIds, dependingOnTaskIds, startDate, deadline, status);
+  int get hashCode => Object.hash(uuid, title, description, agentIds,
+      subTaskIds, dependingOnTaskIds, startDate, deadline, status);
 
   Task copyWith({
     String? uuid,
@@ -91,6 +102,8 @@ class Task implements Serializable{
     DateTime? startDate,
     DateTime? deadline,
     Status? status,
+    bool? isLocked,
+    String? lockedBy,
   }) {
     return Task(
       uuid: uuid ?? this.uuid,
@@ -102,6 +115,8 @@ class Task implements Serializable{
       startDate: startDate ?? this.startDate,
       deadline: deadline ?? this.deadline,
       status: status ?? this.status,
+      isLocked: isLocked ?? this.isLocked,
+      lockedBy: lockedBy ?? this.lockedBy,
     );
   }
 }
