@@ -4,7 +4,7 @@ import 'package:project_craft/models/model.dart';
 enum Status { toPlan, planned, started, completed, delayed }
 
 @immutable
-class Task implements Serializable {
+class Task implements Serializable, Lockable {
   @override
   final String uuid;
   final String title;
@@ -17,7 +17,9 @@ class Task implements Serializable {
   final List<String> subTaskIds;
   final List<String> dependingOnTaskIds;
 
+  @override
   final bool isLocked;
+  @override
   final String lockedBy;
 
   @override
