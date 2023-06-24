@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_craft/models/model.dart';
+import 'package:project_craft/services/firestore.dart';
 
 enum Status { toPlan, planned, started, completed, delayed }
 
@@ -50,8 +51,8 @@ class Task implements Serializable, Lockable {
       "agents": agentIds.toList(),
       "subTasks": subTaskIds,
       "dependingOn": dependingOnTaskIds,
-      "isLocked": isLocked,
-      "lockedBy": lockedBy
+      isLockedKey: isLocked,
+      lockedByKey: lockedBy
     };
   }
 
@@ -68,8 +69,8 @@ class Task implements Serializable, Lockable {
       agentIds: (map["agents"] as List<String>).toSet(),
       subTaskIds: map["subTasks"] as List<String>,
       dependingOnTaskIds: map["dependingOn"] as List<String>,
-      isLocked: map["isLocked"],
-      lockedBy: map["lockedBy"],
+      isLocked: map[isLockedKey],
+      lockedBy: map[lockedByKey],
     );
   }
 

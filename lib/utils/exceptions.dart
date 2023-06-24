@@ -28,3 +28,19 @@ class NotLockedException extends LockException {
 class NoAgentException extends LockException {
   NoAgentException(dynamic object, bool lock) : super('The object being edited is Lockable, but no agent was provided', object, lock);
 }
+
+class ResourceDoesNotExistException implements Exception {
+  final String message;
+  ResourceDoesNotExistException(this.message);
+
+  @override
+  String toString() => "${runtimeType.toString()}: $message";
+}
+
+class ResourceNotLockableException implements Exception {
+  final String message;
+  ResourceNotLockableException(this.message);
+
+  @override
+  String toString() => "${runtimeType.toString()}: $message";
+}
