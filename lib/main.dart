@@ -2,12 +2,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_craft/services/service_locator.dart';
 import 'package:project_craft/utils/routes.dart' as route;
 import 'package:project_craft/utils/theme.dart';
 import 'firebase_options.dart';
 
 void main() async {
   await dotenv.load();
+  setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.web,

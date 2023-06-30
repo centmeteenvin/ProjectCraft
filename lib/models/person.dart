@@ -1,7 +1,11 @@
 
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_craft/models/model.dart';
+import 'package:project_craft/services/repository.dart';
+import 'package:project_craft/services/service_locator.dart';
 
 @immutable
 class Person implements Serializable{
@@ -79,4 +83,22 @@ Person copyWith(
       projectIds,
     );
   }
+}
+
+class PersonNotifier extends StateNotifier<Person?> {
+  PersonNotifier(super.state);
+
+  Future<void> fetchFromFireStore(String uuid) async {
+    var repository = locator<PersonRepository>();
+    Person? person = await repository.read(uuid);
+    if (person == null) {
+      var user = FirebaseAuth.instance.currentUser!;
+      List<String> nameParts = (user.displayName ?? "anon").split(' ');
+      state = Person(uuid: user.uid, firstName: nameParts.first, lastName: nameParts.last, photoUrl: user.photoURL ?? "", projectIds: const <String>{});
+      repository.create(state!);
+      return;
+    }
+    state = person;
+  }
+
 }

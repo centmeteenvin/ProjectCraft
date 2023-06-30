@@ -67,7 +67,8 @@ void main() {
   group('Lock test for repositories, using the Task model', () {
     FireStoreService fs = FireStoreService(isTesting: true);
     Person agent = randomPerson();
-    TaskRepository repository = TaskRepository(fs, agent);
+    TaskRepository repository = TaskRepository(fs);
+    repository.agent = agent;
     test('Test that write actions on unlocked objects fail', () async {
       Task task = randomTask();
       expect(await repository.create(task) , true);

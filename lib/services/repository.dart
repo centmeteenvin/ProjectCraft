@@ -74,8 +74,8 @@ abstract class Repository<T extends Serializable> {
 }
 
 abstract class LockedRepository<T extends Lockable> extends Repository<T> {
-  Person agent;
-  LockedRepository(super.fs, this.agent);
+  late Person agent;
+  LockedRepository(super.fs);
 
   ///Returns true if the object is locked by us.
   Future<bool> checkLock(String uuid) async {
@@ -166,7 +166,7 @@ class PersonRepository extends Repository<Person> {
 }
 
 class TaskRepository extends LockedRepository<Task> {
-  TaskRepository(super.fs, super.agent) {
+  TaskRepository(super.fs) {
     collection = "Tasks";
   }
 
