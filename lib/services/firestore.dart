@@ -57,7 +57,7 @@ class FireStoreService {
       transaction.delete(docref);
       return true;
     });
-  }//TODO test lock
+  }
 
   ///updates a given document, if the document didn't already exist a new one will be created and returning true,
   ///otherwise return false
@@ -88,7 +88,7 @@ class FireStoreService {
       transaction.update(docref, data);
       return false;
     });
-  }//TODO test lock
+  }
 
 Future<Map<String,dynamic>?> fetchDocument(String collection, String docId) async {
   DocumentSnapshot snapshot = await _db.collection(collection).doc(docId).get();
@@ -121,7 +121,7 @@ Future<Map<String,dynamic>?> fetchDocument(String collection, String docId) asyn
       transaction.update(docref, {isLockedKey:true, lockedByKey:agent});
       return true;
       });
-  }//TODO test
+  }
 
 
   ///Try to release the lock, returns true if we had the lock and released it otherwise returns false.
@@ -145,7 +145,7 @@ Future<Map<String,dynamic>?> fetchDocument(String collection, String docId) asyn
       transaction.update(docref, {isLockedKey:false, lockedByKey:""});
       return true;
     });
-  }//TODO test
+  }
 
 } 
 

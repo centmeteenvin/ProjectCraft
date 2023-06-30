@@ -21,6 +21,7 @@ class IsLockedException extends LockException {
   IsLockedException(dynamic object) : super('This object was locked by another instance', object, true);
 }
 
+///This objects is a lockable but we tried to execute a write action without obtaining the lock;
 class NotLockedException extends LockException {
   NotLockedException(dynamic object) : super('This object is a lockable but we tried to execute a write action without obtaining the lock', object, false);
 }

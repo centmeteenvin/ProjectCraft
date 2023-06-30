@@ -1,15 +1,19 @@
-
 import 'package:flutter_test/flutter_test.dart';
+import 'package:project_craft/models/person.dart';
 import 'package:project_craft/models/project.dart';
+import 'package:project_craft/models/task.dart';
 import 'package:project_craft/services/firestore.dart';
 import 'package:project_craft/services/repository.dart';
+import 'package:project_craft/utils/exceptions.dart';
 
+import '../models/person_test.dart';
 import '../models/project_test.dart';
+import '../models/task_test.dart';
 
 void main() {
-  group('CRUD method tests', () {
+  group('CRUD method tests on non Lockable objects', () {
     FireStoreService fs = FireStoreService(isTesting: true);
-    Repository<Project> repository = Repository(fs);
+    ProjectRepository repository = ProjectRepository(fs);
     test('Create a Project and remove it', () async {
       Project project = randomProject();
       expect(await repository.create(project), true);
@@ -58,6 +62,38 @@ void main() {
       expect((await repository.readAllIds()).length, 2);
       expect(await repository.deleteAll(), 2);
       expect((await repository.readAllIds()).length, 0);
+    });
+  });
+  group('Lock test for repositories, using the Task model', () {
+    FireStoreService fs = FireStoreService(isTesting: true);
+    Person agent = randomPerson();
+    TaskRepository repository = TaskRepository(fs, agent);
+    test('Test that write actions on unlocked objects fail', () async {
+      Task task = randomTask();
+      expect(await repository.create(task) , true);
+      task = task.copyWith(description: "different description");
+      expect(await repository.checkLock(task.uuid), false);
+      expect(() => repository.save(task), throwsA(isA<NotLockedException>()));
+      expect(() => repository.delete(task), throwsA(isA<NotLockedException>()));
+      expect(await repository.obtainLock(task), true);
+      expect(await repository.checkLock(task.uuid), true);
+      expect(await repository.delete(task), true);
+    });
+
+    test('Test that write actions on locked objects by another person fail', () async {
+      Task task = randomTask();
+      expect(await repository.create(task) , true);
+      expect(await repository.checkLock(task.uuid), false);
+      expect(await repository.obtainLock(task), true);
+      expect(await repository.checkLock(task.uuid), true);
+      Person agent2 = agent.copyWith(uuid: "2");
+      repository.agent = agent2;
+      expect(await repository.checkLock(task.uuid), false);
+      expect(() => repository.save(task), throwsA(isA<NotLockedException>()));
+      expect(() => repository.delete(task), throwsA(isA<NotLockedException>()));
+      repository.agent = agent;
+      expect(await repository.checkLock(task.uuid), true);
+      expect(await repository.delete(task), true);
     });
   });
 }

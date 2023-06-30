@@ -5,7 +5,7 @@ import 'package:project_craft/services/firestore.dart';
 enum Status { toPlan, planned, started, completed, delayed }
 
 @immutable
-class Task implements Serializable, Lockable {
+class Task extends Lockable {
   @override
   final String uuid;
   final String title;
@@ -24,7 +24,7 @@ class Task implements Serializable, Lockable {
   final String lockedBy;
 
   @override
-  const Task(
+  Task(
       {required this.title,
       required this.description,
       required this.agentIds,

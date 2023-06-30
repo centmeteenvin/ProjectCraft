@@ -6,7 +6,7 @@ abstract class Serializable {
   // factory Serializable.fromMap(Map<String,dynamic> map) => throw UnimplementedError();
 }
 
-abstract class Lockable {
+abstract class Lockable extends Serializable {
   bool get isLocked;
   String get lockedBy;
 }
